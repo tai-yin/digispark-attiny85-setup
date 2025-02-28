@@ -3,7 +3,7 @@ This guide is a complete guide to setting up the Digispark ATtiny85 board on mac
 
 Several problems were dealt with in this guide, including:
 - Digispark ATtiny85 bootloader installation with arduino uno as ISP
-- Digistump AVR Boards installation workarounds(with one that will definitely work)
+- Digistump AVR Boards installation workarounds(with one that will **definitely** work)
 - Digispark ATtiny85 script upload and execution
 
 ## Credits
