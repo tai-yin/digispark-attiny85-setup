@@ -80,17 +80,13 @@ The port will look like **/dev/cu.usbmodemXXXX** on macOS.
 
 Open up your terminal, find where the avrdude config file is located.
 ```sh
-$ which avrdude
+which avrdude
 ```
 If it's **/usr/local/bin/avrdude**, then look for **avrdudue.conf** in **/usr/local/Cellar/avrdude/<version>/.bottle/etc/avrdude.conf**
 
 If it's **/opt/homebrew/bin/avrdude**, then look for **avrdudue.conf** in **/opt/homebrew/Cellar/avrdude/8.0/.bottle/etc**
 
 Download the [t85_default.hex](https://github.com/micronucleus/micronucleus/blob/master/firmware/releases/t85_default.hex) file from the DigistumpArduino repo.
-
-```sh
-$ curl -L https://github.com/micronucleus/micronucleus/blob/master/firmware/releases/t85_default.hex -o t85_default.hex
-```
 
 Finally, set the environment variables and run the following command to burn the bootloader to the Digispark ATtiny85.
 ```sh
@@ -106,10 +102,63 @@ Example:
 ```sh
 export AVRDUDE_PORT=/dev/cu.usbmodem14201
 export AVRDUDE_CONF=/usr/local/Cellar/avrdude/8.0/.bottle/etc/avrdude.conf
+
 avrdude -C $AVRDUDE_CONF \
 -v -p t85 -c stk500v1 -P $AVRDUDE_PORT -b 19200 \
--U flash:w:/path/to/t85_default.hex:i \
+-U flash:w:t85_default.hex:i \
 -U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
+Avrdude version 8.0
+Copyright see https://github.com/avrdudes/avrdude/blob/main/AUTHORS
+
+System wide configuration file is /usr/local/Cellar/avrdude/8.0/.bottle/etc/avrdude.conf
+User configuration file /Users/taiy/.avrduderc does not exist
+
+Using port            : /dev/cu.usbmodem14101
+Using programmer      : stk500v1
+Setting baud rate     : 19200
+AVR part              : ATtiny85
+Programming modes     : SPM, ISP, HVSP, debugWIRE
+Programmer type       : STK500
+Description           : Atmel STK500 v1
+HW Version            : 2
+FW Version            : 1.18
+Topcard               : Unknown
+Vtarget               : 0.0 V
+Varef                 : 0.0 V
+Oscillator            : Off
+SCK period            : 0.0 us
+XTAL frequency        : 7.372800 MHz
+
+AVR device initialized and ready to accept instructions
+Device signature = 1E 93 0B (ATtiny85)
+Auto-erasing chip as flash memory needs programming (-U flash:w:...)
+specify the -D option to disable this feature
+Erased chip
+
+Processing -U flash:w:t85_default.hex:i
+Reading 1514 bytes for flash from input file t85_default.hex
+in 1 section [0x1a00, 0x1fe9]: 24 pages and 22 pad bytes
+Writing 1514 bytes to flash
+Writing | ################################################## | 100% 2.21 s 
+Reading | ################################################## | 100% 1.10 s 
+1514 bytes of flash verified
+
+Processing -U lfuse:w:0xe1:m
+Reading 1 byte for lfuse from input file 0xe1
+in 1 section [0, 0]
+Writing 1 byte (0xE1) to lfuse, 1 byte written, 1 verified
+
+Processing -U hfuse:w:0xdd:m
+Reading 1 byte for hfuse from input file 0xdd
+in 1 section [0, 0]
+Writing 1 byte (0xDD) to hfuse, 1 byte written, 1 verified
+
+Processing -U efuse:w:0xfe:m
+Reading 1 byte for efuse from input file 0xfe
+in 1 section [0, 0]
+Writing 1 byte (0xFE) to efuse, 1 byte written, 1 verified
+
+Avrdude done.  Thank you.
 ```
 
 Now the bootloader should be burned to the Digispark ATtiny85.
