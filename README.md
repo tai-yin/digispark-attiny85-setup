@@ -1,8 +1,7 @@
 # Complete Digispark ATtiny85 Setup(macOS)
 This guide is a complete guide to setting up the Digispark ATtiny85 board on macOS with the Arduino Uno as ISP and Arduino IDE.
 
-Thanks to [jasdoge](https://github.com/Jasdoge) for the [Bootloader tutorial](https://github.com/Jasdoge/Attiny85-Bootloader-Tutorial).
-Thanks to [dbdness](https://github.com/dbdness) for the [MacOS Setup tutorial](https://gist.github.com/dbdness/072b032ecbab80578730345dbe68fb5b).
+Thanks to [jasdoge](https://github.com/Jasdoge) for the [Bootloader tutorial](https://github.com/Jasdoge/Attiny85-Bootloader-Tutorial) and [dbdness](https://github.com/dbdness) for the [MacOS Setup tutorial](https://gist.github.com/dbdness/072b032ecbab80578730345dbe68fb5b).
 
 
 ## Prerequisites
