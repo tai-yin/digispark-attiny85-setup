@@ -30,8 +30,8 @@ Thanks to [jasdoge](https://github.com/Jasdoge) for the [Bootloader tutorial](ht
 
 ### 1. Install Arduino IDE
 
-- Downloading the `.app`: https://www.arduino.cc/en/software
-- Using Homebrew
+- Download app from [https://www.arduino.cc/en/software](https://www.arduino.cc/en/software)
+- Or install using Homebrew
 
 ```bash
 $ brew install --cask arduino
