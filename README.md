@@ -30,12 +30,7 @@ Thanks to [jasdoge](https://github.com/Jasdoge) for the [Bootloader tutorial](ht
 
 ### 1. Install Arduino IDE
 
-- Download app from [https://www.arduino.cc/en/software](https://www.arduino.cc/en/software)
-- Or install using Homebrew
-
-```bash
-$ brew install --cask arduino
-```
+Download app from [https://www.arduino.cc/en/software](https://www.arduino.cc/en/software)
 
 ### 2. Turn Arduino Uno into ISP
 Connect your arduino uno via USB.
