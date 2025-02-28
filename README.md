@@ -1,21 +1,12 @@
-# Complete Guide to Digispark ATtiny85 Setup(macOS)
+# Complete Digispark ATtiny85 Setup(macOS)
 This guide is a complete guide to setting up the Digispark ATtiny85 board on macOS with the Arduino Uno as ISP and Arduino IDE.
-
-Several problems were dealt with in this guide, including:
-- Digispark ATtiny85 bootloader installation with arduino uno as ISP
-- Digistump AVR Boards installation workarounds(with one that will **definitely** work)
-- Digispark ATtiny85 script upload and execution
-
-## Credits
-Thanks to [jasdoge](https://github.com/Jasdoge) for the [Bootloader tutorial](https://github.com/Jasdoge/Attiny85-Bootloader-Tutorial) and [dbdness](https://github.com/dbdness) for the [MacOS Setup tutorial](https://gist.github.com/dbdness/072b032ecbab80578730345dbe68fb5b).
-
 
 ## Prerequisites
 - [Digispark ATtiny85](https://www.kickstarter.com/projects/digistump/digispark-the-tiny-arduino-enabled-usb-dev-board)
 - [Arduino IDE](https://www.arduino.cc/en/software)
 - [Arduino Uno](https://store.arduino.cc/products/arduino-uno-rev3)
 - [avrdude](https://github.com/avrdudes/avrdude)
-- [(Optional) Micronucleus](https://github.com/micronucleus/micronucleus/releases)
+- [Micronucleus](https://github.com/micronucleus/micronucleus/releases)
 - USB-A to USB-B Cable
 - Breadboard
 - Jumper Wires
@@ -28,7 +19,7 @@ Thanks to [jasdoge](https://github.com/Jasdoge) for the [Bootloader tutorial](ht
 0. [Install avrdude](#3-install-avrdude)
 0. [Connect Digispark ATtiny85 to Arduino Uno](#4-connect-digispark-attiny85-to-arduino-uno)
 0. [Use avrdude CLI to burn bootloader to Digispark ATtiny85 with Arduino Uno as ISP](#5-use-avrdude-cli-to-burn-bootloader-to-digispark-attiny85-with-arduino-uno-as-isp)
-0. [(Optional) Verify firmware is burned to Digispark ATtiny85](#6-verify-firmware-is-burned-to-digispark-attiny85)
+0. [Verify firmware is burned to Digispark ATtiny85](#6-verify-firmware-is-burned-to-digispark-attiny85)
 0. [Install Digispark AVR Boards in Arduino IDE](#7-install-digispark-avr-boards-in-arduino-ide)
 0. [Verify Environment with Sample 'Blinking LED' Script](#8-verify-environment-with-sample-blinking-led-script)
 0. [Upload and Execute Script](#9-upload-and-execute-script)
@@ -36,15 +27,17 @@ Thanks to [jasdoge](https://github.com/Jasdoge) for the [Bootloader tutorial](ht
 
 ### 1. Install Arduino IDE
 
-Download app from [https://www.arduino.cc/en/software](https://www.arduino.cc/en/software)
+- Downloading the `.app`: https://www.arduino.cc/en/software
+- Using Homebrew
+
+```bash
+$ brew install --cask arduino
+```
 
 ### 2. Turn Arduino Uno into ISP
 Connect your arduino uno via USB.
-
 Go to file > examples > 11. ArduinoISP > ArduinoISP to open the ArduinoISP sketch.
-
 Hit the arrow button to upload it to your arduino.
-
 Now the arduino uno can act as an ISP for the Digispark ATtiny85.
 
 
@@ -76,7 +69,7 @@ Connect the Digispark ATtiny85 to the Arduino Uno as follows:
 
 For example, connect Digispark ATtiny85 pin 0 to Arduino Uno pin 11, Digispark ATtiny85 pin 1 to Arduino Uno pin 12, etc.
 
-Also connect a 10uF capacitor between arduino pin 10 (RESET) and arduino GND. Note that when using an electrolytic capacitor, put anode on RESET and cathode on GND.
+Also connect a 10uF capacitor between arduino RST and arduino GND. Note that when using an electrolytic capacitor, put anode on RST and cathode on GND.
 
 ### 5. Use avrdude CLI to burn bootloader to Digispark ATtiny85 with Arduino Uno as ISP
 
@@ -123,7 +116,7 @@ Now the bootloader should be burned to the Digispark ATtiny85.
 
 ### 6. Verify firmware is burned to Digispark ATtiny85
 
-Note that Micronucleus is only available for Intel chips. 
+Note that Micronucleus is only available for Intel chips.
 
 Download the [Micronucleus tool](https://github.com/micronucleus/micronucleus/releases)(x86_64-Darwin.zip
  for intel chips), to verify the firmware is burned to the Digispark ATtiny85.
@@ -135,14 +128,15 @@ Unzip the file and run the following command to verify the firmware is burned to
 
 
 ### 7. Install Digispark AVR Boards in Arduino IDE
+1) Update board source
 
-**digistump.com** has been down for a while, so we need to use the **github** mirror for the board manager index url.
+**digistump.com** has been down for a while, so we need to use the **github** mirror for the board manager.
 
 In Arduino IDE, go to **File** -> **Preferences** and dump the following into the **Additional Boards Manager URLs** box:
 
 [https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json](https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json)
 
-but in case that does not work too(you may get 404 error), you can try the following as last resort:
+In case that does not work too(you may get 404 error), you can try the following:
 
 ```sh
 pip install fastapi uvicorn
