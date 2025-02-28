@@ -175,6 +175,8 @@ Unzip the file and run the following command to verify the firmware is burned to
 ./micronucleus --info
 ```
 
+Note that when plugged in, Mac might not be able to recogonize the board, use a USB hub or USB2 cable instead.
+
 
 ### 7. Install Digispark AVR Boards in Arduino IDE
 1) Update board source
