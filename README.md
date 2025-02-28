@@ -34,8 +34,11 @@ Download app from [https://www.arduino.cc/en/software](https://www.arduino.cc/en
 
 ### 2. Turn Arduino Uno into ISP
 Connect your arduino uno via USB.
+
 Go to file > examples > 11. ArduinoISP > ArduinoISP to open the ArduinoISP sketch.
+
 Hit the arrow button to upload it to your arduino.
+
 Now the arduino uno can act as an ISP for the Digispark ATtiny85.
 
 
