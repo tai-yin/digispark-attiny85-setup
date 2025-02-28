@@ -129,15 +129,14 @@ Unzip the file and run the following command to verify the firmware is burned to
 
 
 ### 7. Install Digispark AVR Boards in Arduino IDE
-1) Update board source
 
-**digistump.com** has been down for a while, so we need to use the **github** mirror for the board manager.
+**digistump.com** has been down for a while, so we need to use the **github** mirror for the board manager index url.
 
 In Arduino IDE, go to **File** -> **Preferences** and dump the following into the **Additional Boards Manager URLs** box:
 
 [https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json](https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json)
 
-In case that does not work too(you may get 404 error), you can try the following:
+but in case that does not work too(you may get 404 error), you can try the following as last resort:
 
 ```sh
 pip install fastapi uvicorn
