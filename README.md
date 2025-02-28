@@ -70,7 +70,7 @@ Connect the Digispark ATtiny85 to the Arduino Uno as follows:
 
 For example, connect Digispark ATtiny85 pin 0 to Arduino Uno pin 11, Digispark ATtiny85 pin 1 to Arduino Uno pin 12, etc.
 
-Also connect a 10uF capacitor between arduino RST and arduino GND. Note that when using an electrolytic capacitor, put anode on RST and cathode on GND.
+Also connect a 10uF capacitor between arduino pin 10 (RESET) and arduino GND. Note that when using an electrolytic capacitor, put anode on RESET and cathode on GND.
 
 ### 5. Use avrdude CLI to burn bootloader to Digispark ATtiny85 with Arduino Uno as ISP
 
