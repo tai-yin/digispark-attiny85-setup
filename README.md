@@ -9,7 +9,7 @@ Thanks to [jasdoge](https://github.com/Jasdoge) for the [Bootloader tutorial](ht
 - [Arduino IDE](https://www.arduino.cc/en/software)
 - [Arduino Uno](https://store.arduino.cc/products/arduino-uno-rev3)
 - [avrdude](https://github.com/avrdudes/avrdude)
-- [Micronucleus](https://github.com/micronucleus/micronucleus/releases)
+- [(Optional) Micronucleus](https://github.com/micronucleus/micronucleus/releases)
 - USB-A to USB-B Cable
 - Breadboard
 - Jumper Wires
