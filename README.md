@@ -12,17 +12,17 @@ This guide is a complete guide to setting up the Digispark ATtiny85 board on mac
 - Jumper Wires
 - 10uF Capacitor
 
+**Before you begin:** Have your Arduino Uno, Digispark ATtiny85, USB cable, 10 µF capacitor, jumper wires, and breadboard ready. First-time setup typically takes about 30–45 minutes.
 
 ## Steps
 1. [Install Arduino IDE](#1-install-arduino-ide)
-0. [Turn Arduino Uno into ISP](#2-turn-arduino-uno-into-isp)
-0. [Install avrdude](#3-install-avrdude)
-0. [Connect Digispark ATtiny85 to Arduino Uno](#4-connect-digispark-attiny85-to-arduino-uno)
-0. [Use avrdude CLI to burn bootloader to Digispark ATtiny85 with Arduino Uno as ISP](#5-use-avrdude-cli-to-burn-bootloader-to-digispark-attiny85-with-arduino-uno-as-isp)
-0. [Verify firmware is burned to Digispark ATtiny85](#6-verify-firmware-is-burned-to-digispark-attiny85)
-0. [Install Digispark AVR Boards in Arduino IDE](#7-install-digispark-avr-boards-in-arduino-ide)
-0. [Verify Environment with Sample 'Blinking LED' Script](#8-verify-environment-with-sample-blinking-led-script)
-0. [Upload and Execute Script](#9-upload-and-execute-script)
+2. [Turn Arduino Uno into ISP](#2-turn-arduino-uno-into-isp)
+3. [Install avrdude](#3-install-avrdude)
+4. [Connect Digispark ATtiny85 to Arduino Uno](#4-connect-digispark-attiny85-to-arduino-uno)
+5. [Use avrdude CLI to burn bootloader to Digispark ATtiny85 with Arduino Uno as ISP](#5-use-avrdude-cli-to-burn-bootloader-to-digispark-attiny85-with-arduino-uno-as-isp)
+6. [Install Digispark AVR Boards in Arduino IDE](#6-install-digispark-avr-boards-in-arduino-ide)
+7. [Verify Environment with Sample 'Blinking LED' Script](#7-verify-environment-with-sample-blinking-led-script)
+8. [Upload and Execute Script](#8-upload-and-execute-script)
 
 
 ### 1. Install Arduino IDE
@@ -31,14 +31,13 @@ This guide is a complete guide to setting up the Digispark ATtiny85 board on mac
 - Using Homebrew
 
 ```bash
-$ brew install --cask arduino
+$ brew install --cask arduino-ide
 ```
 
 ### 2. Turn Arduino Uno into ISP
-Connect your arduino uno via USB.
-Go to file > examples > 11. ArduinoISP > ArduinoISP to open the ArduinoISP sketch.
-Hit the arrow button to upload it to your arduino.
-Now the arduino uno can act as an ISP for the Digispark ATtiny85.
+Connect your Arduino Uno via USB. In Arduino IDE, go to **File** → **Examples** → **11. ArduinoISP** → **ArduinoISP** to open the ArduinoISP sketch. Click the Upload (arrow) button to upload it to your Uno. The Arduino Uno can now act as an ISP for the Digispark ATtiny85.
+
+When you are ready to wire the Digispark (Step 4) and burn the bootloader (Step 5), keep the Uno connected to USB so it can power the Digispark and communicate with avrdude.
 
 
 ### 3. Install avrdude
@@ -69,44 +68,49 @@ Connect the Digispark ATtiny85 to the Arduino Uno as follows:
 
 For example, connect Digispark ATtiny85 pin 0 to Arduino Uno pin 11, Digispark ATtiny85 pin 1 to Arduino Uno pin 12, etc.
 
-Also connect a 10uF capacitor between arduino RST and arduino GND. Note that when using an electrolytic capacitor, put anode on RST and cathode on GND.
+Also connect a 10 µF capacitor between Arduino **RST** and **GND**. If using an electrolytic capacitor, put the anode on RST and cathode on GND. A ceramic 10 µF capacitor has no polarity—either lead can go to RST or GND.
+
+The Digispark is powered by the Uno’s 5V via the VIN–5V connection; the Uno must be connected to USB during the bootloader burn in Step 5.
 
 ### 5. Use avrdude CLI to burn bootloader to Digispark ATtiny85 with Arduino Uno as ISP
 
-Connect your arduino again via USB and go to Arduino IDE.
+**Order of operations:** Upload ArduinoISP to the Uno (Step 2) → Wire the Digispark to the Uno (Step 4) with the 10 µF capacitor → Connect the Uno to your Mac via USB → Run avrdude below.
 
-Under tools->port, take note of the port that your arduino uno is connected to.
-The port will look like **/dev/cu.usbmodemXXXX** on macOS.
+In Arduino IDE, go to **Tools** → **Port** and note the port your Arduino Uno is using (e.g. **/dev/cu.usbmodemXXXX** on macOS). If you unplug and replug the Uno, the port may change—re-check if avrdude fails to open the device.
 
-Open up your terminal, find where the avrdude config file is located.
-```sh
-which avrdude
+In a terminal, find the avrdude config file location:
+
+```bash
+$ which avrdude
 ```
-If it's **/usr/local/bin/avrdude**, then look for **avrdudue.conf** in **/usr/local/Cellar/avrdude/<version>/.bottle/etc/avrdude.conf**
 
-If it's **/opt/homebrew/bin/avrdude**, then look for **avrdudue.conf** in **/opt/homebrew/Cellar/avrdude/8.0/.bottle/etc**
+- If avrdude is at **/usr/local/bin/avrdude** (Intel Mac), the config is **avrdude.conf** in **/usr/local/Cellar/avrdude/&lt;version&gt;/.bottle/etc/**
+- If at **/opt/homebrew/bin/avrdude** (Apple Silicon), look in **/opt/homebrew/Cellar/avrdude/&lt;version&gt;/.bottle/etc/**
 
-Download the [t85_default.hex](https://github.com/micronucleus/micronucleus/blob/master/firmware/releases/t85_default.hex) file from the DigistumpArduino repo.
+Download the [t85_default.hex](https://github.com/micronucleus/micronucleus/blob/master/firmware/releases/t85_default.hex) file (Micronucleus bootloader) from the micronucleus repo. Place it in the directory where you will run avrdude, or use its full path in the command.
 
-Finally, set the environment variables and run the following command to burn the bootloader to the Digispark ATtiny85.
-```sh
-export AVRDUDE_PORT=<your_arduino_port>
-export AVRDUDE_CONF=<path_to_avrdude_config_file>
-avrdude -C $AVRDUDE_CONF \
--v -p t85 -c stk500v1 -P $AVRDUDE_PORT -b 19200 \
--U flash:w:t85_default.hex:i \
--U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
+**Fuse warning:** The commands below set fuse bytes (lfuse, hfuse, efuse). Do not change these values unless you know what they do; wrong values can lock the chip or prevent it from running.
+
+Set the environment variables and run the following to burn the bootloader:
+```bash
+$ export AVRDUDE_PORT=<your_arduino_port>
+$ export AVRDUDE_CONF=<path_to_avrdude_config_file>
+$ avrdude -C $AVRDUDE_CONF \
+  -v -p t85 -c stk500v1 -P $AVRDUDE_PORT -b 19200 \
+  -U flash:w:t85_default.hex:i \
+  -U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
 ```
 
 Example:
-```sh
-export AVRDUDE_PORT=/dev/cu.usbmodem14201
-export AVRDUDE_CONF=/usr/local/Cellar/avrdude/8.0/.bottle/etc/avrdude.conf
 
-avrdude -C $AVRDUDE_CONF \
--v -p t85 -c stk500v1 -P $AVRDUDE_PORT -b 19200 \
--U flash:w:t85_default.hex:i \
--U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
+```bash
+$ export AVRDUDE_PORT=/dev/cu.usbmodem14201
+$ export AVRDUDE_CONF=/usr/local/Cellar/avrdude/8.0/.bottle/etc/avrdude.conf
+
+$ avrdude -C $AVRDUDE_CONF \
+  -v -p t85 -c stk500v1 -P $AVRDUDE_PORT -b 19200 \
+  -U flash:w:t85_default.hex:i \
+  -U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
 Avrdude version 8.0
 Copyright see https://github.com/avrdudes/avrdude/blob/main/AUTHORS
 
@@ -163,22 +167,7 @@ Avrdude done.  Thank you.
 
 Now the bootloader should be burned to the Digispark ATtiny85.
 
-### 6. Verify firmware is burned to Digispark ATtiny85
-
-Note that Micronucleus is only available for Intel chips.
-
-Download the [Micronucleus tool](https://github.com/micronucleus/micronucleus/releases)(x86_64-Darwin.zip
- for intel chips), to verify the firmware is burned to the Digispark ATtiny85.
-
-Unzip the file and run the following command to verify the firmware is burned to the Digispark ATtiny85.
-```sh
-./micronucleus --info
-```
-
-Note that when plugged in, Mac might not be able to recogonize the board, use a USB hub or USB2 cable instead.
-
-
-### 7. Install Digispark AVR Boards in Arduino IDE
+### 6. Install Digispark AVR Boards in Arduino IDE
 1) Update board source
 
 **digistump.com** has been down for a while, so we need to use the **github** mirror for the board manager.
@@ -187,25 +176,23 @@ In Arduino IDE, go to **File** -> **Preferences** and dump the following into th
 
 [https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json](https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json)
 
-In case that does not work too(you may get 404 error), you can try the following:
+If that URL does not work (e.g. 404), you can run a local server that serves the board index. From this repo’s directory:
 
-```sh
-pip install fastapi uvicorn
-uvicorn main:app --reload
+```bash
+$ pip install fastapi uvicorn
+$ uvicorn app:app --reload
 ```
 
-This is going to firing up a simple local backend server that hosts the board manager index file.
+Then in **Additional Boards Manager URLs** use:
 
-Then paste the following into the **Additional Boards Manager URLs** box:
-
-```sh
+```
 http://127.0.0.1:8000/package_digistump_index.json
 ```
 
-You should be seeing Arduino IDE successfully fetching the board manager index file from your local server.
+Arduino IDE should then fetch the board index from your local server. Example server output:
 
-```sh
-% uvicorn app:app --host 192.168.2.196 --reload
+```bash
+$ uvicorn app:app --reload
 INFO:     Will watch for changes in these directories: ['/Users/taiy/Documents/GitHub/digispark-attiny85-setup']
 INFO:     Uvicorn running on http://192.168.2.196:8000 (Press CTRL+C to quit)
 INFO:     Started reloader process [49490] using StatReload
@@ -221,13 +208,13 @@ INFO:     192.168.2.250:49585 - "HEAD /package_digistump_index.json HTTP/1.1" 40
 INFO:     192.168.2.250:49585 - "GET /package_digistump_index.json HTTP/1.1" 200 OK
 ```
 
-2) Install the Digistump AVR Boards
-Still in Arduino IDE, go to **Tools** -> **Board** -> **Boards Manager**. From the **Type** dropdown, select **Contributed**. Select the **Digistump AVR Boards** package and click install.
+2) Install the Digistump AVR Boards  
+In Arduino IDE, go to **Tools** → **Board** → **Boards Manager**. In the **Type** dropdown, select **Contributed** (Arduino IDE 2.x may show **All** or another label—look for **Digistump AVR Boards**). Select **Digistump AVR Boards** and click **Install**.
 
-3) Set the Digistump AVR Boards as the default board
-Still in Arduino IDE, go to **Tools** -> **Board** -> **Digitump AVR Boards** -> **Digispark (Default - 16.5mhz)**.
+3) Set the default board  
+Go to **Tools** → **Board** → **Digistump AVR Boards** → **Digispark (Default - 16.5mhz)**.
 
-### 8. Verify Environment with Sample 'Blinking LED' Script
+### 7. Verify Environment with Sample 'Blinking LED' Script
 1) Paste the following blinking LED script into the sketch present in Arduino IDE:
 
 ```sketch
@@ -274,24 +261,19 @@ $ mv 4.8.1-arduino5/ orig.4.8.1
 $ ln -s ~/Library/Arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7 4.8.1-arduino5
 ```
 
-### 9. Upload and Execute Script
-Once the script can be verified with no issues, get the Digispark ATtiny85 board, but do not plug it into your computer yet.
+### 8. Upload and Execute Script
+Once the sketch verifies successfully, get the Digispark ATtiny85 board but **do not plug it in yet**.
 
-
-1. In the Arduino IDE, pick **Digispark (Default - 16.5mhz)** as the board.
-
-0. In Tools->Programmer, select Micronucleus. This is very important, otherwise the bootloader will be overwritten and the next time you upload the script, you'll have to burn the bootloader again.
-
-0. From the Arduino IDE, click "Upload" in the top left, and wait for the prompt: 
+1. In Arduino IDE, select **Tools** → **Board** → **Digistump AVR Boards** → **Digispark (Default - 16.5mhz)**.
+2. In **Tools** → **Programmer**, select **Micronucleus**. This is required so the bootloader is not overwritten; otherwise you would need to burn the bootloader again.
+3. Click **Upload** in the top left and wait for the prompt: 
 
 ```
 Running Digispark Uploader...
 Plug in device now... (will timeout in 60 seconds)
 ```
 
-2. Plug in the board and wait.
-
-3. The following should be displayed in the Arduino console, and the script should self-execute on the machine:
+4. Plug in the Digispark via USB and wait. The following should appear in the Arduino console and the sketch should start running on the board:
 
 ```bash
 > Device is found!
@@ -317,3 +299,15 @@ writing: 80% complete
 running: 100% complete
 >> Micronucleus done. Thank you!
 ```
+
+---
+
+## Troubleshooting
+
+| Issue | What to try |
+|-------|-------------|
+| **avrdude: ser_open(): can't open device** | Wrong or changed port. In Arduino IDE, **Tools** → **Port** and note the correct `/dev/cu.usbmodemXXXX`. Unplug/replug the Uno and re-check. Set `AVRDUDE_PORT` to that value. |
+| **Device signature = 0x000000** or **initialization failed** | Wiring or power: confirm all six connections (VIN→5V, GND→GND, 0→11, 1→12, 2→13, 5→10) and the 10 µF capacitor (RST–GND). Ensure the Uno is connected to USB so it powers the Digispark. |
+| **bad CPU type in executable** (avr-g++) | You are on Apple Silicon (M1/M2/M3). Apply the AVR tool symlink fix in Step 7 (Arduino IDE 2.x) so the Digistump toolchain uses a compatible compiler. |
+| **Plug in device now... (will timeout in 60 seconds)** then timeout | Try a different USB port, a USB 2.0 hub, or a different USB cable. Some Macs and USB 3 ports do not enumerate the Digispark reliably. |
+| **404** when adding board URL | Use the local server fallback in Step 6: run `uvicorn app:app --reload` from this repo and use `http://127.0.0.1:8000/package_digistump_index.json`. |
