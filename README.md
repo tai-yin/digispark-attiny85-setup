@@ -311,3 +311,6 @@ running: 100% complete
 | **bad CPU type in executable** (avr-g++) | You are on Apple Silicon (M1/M2/M3). Apply the AVR tool symlink fix in Step 7 (Arduino IDE 2.x) so the Digistump toolchain uses a compatible compiler. |
 | **Plug in device now... (will timeout in 60 seconds)** then timeout | Try a different USB port, a USB 2.0 hub, or a different USB cable. Some Macs and USB 3 ports do not enumerate the Digispark reliably. |
 | **404** when adding board URL | Use the local server fallback in Step 6: run `uvicorn app:app --reload` from this repo and use `http://127.0.0.1:8000/package_digistump_index.json`. |
+
+## Appendix Digispark ATTiny85 Schematic
+<img src="images/schematic.png"/>
